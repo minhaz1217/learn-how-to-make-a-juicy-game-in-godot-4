@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://stcivysk52ie"]
 
-[ext_resource type="Script" path="res://scenes/brick/scripts/brick.gd" id="1"]
+[ext_resource type="Script" uid="uid://cucc2sjogebl8" path="res://scenes/brick/scripts/brick.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://db465xyaa66b4" path="res://scenes/brick/visuals/One.png" id="2"]
 [ext_resource type="Texture2D" uid="uid://dy8bxg728dvar" path="res://scenes/brick/visuals/BlockSmallFull.png" id="3"]
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://kecm2g5qh537"]
 
 [ext_resource type="FontFile" uid="uid://br01odh1twpni" path="res://shared/fonts/aldo_the_apache/AldotheApache.ttf" id="1_j4jg6"]
-[ext_resource type="Script" path="res://scenes/effects/bump/scripts/bump_timing.gd" id="1_nfrxx"]
+[ext_resource type="Script" uid="uid://dd0xlhohi3krx" path="res://scenes/effects/bump/scripts/bump_timing.gd" id="1_nfrxx"]
 
 [node name="BumpTimings" type="Node2D"]
 script = ExtResource("1_nfrxx")

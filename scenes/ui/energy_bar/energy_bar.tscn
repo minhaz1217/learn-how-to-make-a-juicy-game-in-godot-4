@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://c48m66isx4utm"]
 
-[ext_resource type="Script" path="res://scenes/ui/energy_bar/scripts/energy_bar.gd" id="1"]
+[ext_resource type="Script" uid="uid://cdd5nxrnryix1" path="res://scenes/ui/energy_bar/scripts/energy_bar.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://clkxun12gq2gv" path="res://scenes/ui/shared/visuals/Container.png" id="2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_531ku"]

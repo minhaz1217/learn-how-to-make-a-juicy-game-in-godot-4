@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://lc5lho6dqctj"]
 
 [ext_resource type="Texture2D" uid="uid://cj51dnttt3at2" path="res://scenes/ui/health/visuals/HeartFull.png" id="1"]
-[ext_resource type="Script" path="res://scenes/ui/health/scripts/health.gd" id="2"]
+[ext_resource type="Script" uid="uid://bt57tt6dmrbf8" path="res://scenes/ui/health/scripts/health.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://clkxun12gq2gv" path="res://scenes/ui/shared/visuals/Container.png" id="3"]
 
 [node name="HealthBar" type="Control"]

@@ -149,6 +149,10 @@ func _physics_process(delta: float) -> void:
 		emit_signal("hit_block", collision.get_collider())
 		
 #### Visuals ####
+func appear() -> void:
+	animation_player.play("RESET")
+	animation_player.play("appear")
+	
 func scale_based_on_velocity() -> void:
 	if animation_player.is_playing(): return
 	sprite.scale = lerp( sprite_base_scale, sprite_base_scale * Vector2(1.4,.5), velocity.length()/max_speed)

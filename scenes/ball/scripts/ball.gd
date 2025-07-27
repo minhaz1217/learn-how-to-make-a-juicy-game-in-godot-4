@@ -32,12 +32,28 @@ var boost_factor_late_early: float = 1.15
 @onready var sprite = $Sprite2D
 @onready var sprite_base_scale : Vector2 = sprite.scale
 
+# HitStop
+var hitstop_frame = 0
+var hitstop_bump_late_early = 5
+var hitstop_bump_perfect = 10
+var hitstop_paddle = 5
+var hitstop_block = 5
+var hitstop_bomb = 10
+
+
 func _ready() -> void:
 	randomize()
 func _process(delta):
 	scale_based_on_velocity()
 	
 func _physics_process(delta: float) -> void:
+	
+	if hitstop_frame > 0:
+		hitstop_frame -= 1
+		if hitstop_frame <= 0:
+			stop_hitstop()
+		return
+	
 	$VelocityLine.rotation = velocity.angle()
 	frames_since_paddle_collison += 1
 	
@@ -72,6 +88,10 @@ func _physics_process(delta: float) -> void:
 #		print("Normal:", normal)
 #		print("Dot:", normal.dot(Vector2.UP))
 		spawn_bump_particles(collision.get_position(), normal)
+		
+		if boost_factor == 1.0:
+			start_hitstop(hitstop_paddle)
+		
 		# Collision from the top, most of the cases
 		if normal.dot(Vector2.UP) > 0.0:
 #			print("HIT TOP: ", Globals.stats["ball_bounces"])
@@ -113,8 +133,10 @@ func _physics_process(delta: float) -> void:
 		if collision.get_collider().type == collision.get_collider().TYPE.ENERGY or \
 			collision.get_collider().type == collision.get_collider().TYPE.EXPLOSIVE:
 			velocity = velocity_before_collision
+			start_hitstop(hitstop_bomb)
 		else:
 			velocity = velocity.bounce(normal)
+			start_hitstop(hitstop_block)
 	else:
 #		print("HIT OTHER: ", Globals.stats["ball_bounces"])
 		spawn_bounce_particles(collision.get_position(), normal)
@@ -144,6 +166,15 @@ func spawn_bump_particles(pos: Vector2, normal: Vector2) -> void:
 	instance.global_position = pos
 	instance.rotation = normal.angle()
 
+func start_hitstop(hitstop_amount : int) -> void:
+	animation_player.pause()
+	hitstop_frame = hitstop_amount
+	
+func stop_hitstop() -> void:
+	animation_player.play()
+	hitstop_frame = 0
+
+
 func attract(global_position) -> void:
 	attracted = true
 	attracted_to = global_position
@@ -171,6 +202,7 @@ func bump_boost(who) -> void:
 		boost_factor = boost_factor_late_early
 		Globals.stats["bumps_late"] += 1
 		spawn_bump_timing(Globals.BUMP.LATE)
+		start_hitstop(hitstop_bump_late_early)
 	
 	# Bump perfect
 	elif frames_since_paddle_collison < 5:
@@ -178,13 +210,14 @@ func bump_boost(who) -> void:
 		boost_factor = boost_factor_perfect
 		Globals.stats["bumps_perfect"] += 1
 		spawn_bump_timing(Globals.BUMP.PERFECT)
-	
+		start_hitstop(hitstop_bump_perfect)
 	# Bump early
 	else:
 		print("BUMP EARLY")
 		boost_factor = boost_factor_late_early
 		Globals.stats["bumps_early"] += 1
 		spawn_bump_timing(Globals.BUMP.EARLY)
+		start_hitstop(hitstop_bump_late_early)
 
 func launch() -> void:
 #	velocity = (-global_transform.y).rotated(randf_range(-PI/3.0, PI/3.0)) * speed

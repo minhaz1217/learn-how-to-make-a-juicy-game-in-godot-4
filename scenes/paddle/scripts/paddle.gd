@@ -8,6 +8,15 @@ signal start()
 @export var deccel: float = 10.0
 @export var dash_speed: float = 1000.0
 @export var dash_duration: float = 0.1
+@export var max_lean_angle: float = 7.0
+@export var lean_speed: float = 8.0
+
+@export_category("Oscillator")
+@export var spring: float = 150.0
+@export var damp: float = 10.0
+@export var velocity_multiplier: float = 2.0
+
+
 
 var dashing: bool = false
 var ball_attached = null
@@ -17,11 +26,15 @@ var stage_clear: bool = false
 var ball = null
 var frames_since_bump: int = 0
 
+var displacement: float = 0.0
+var oscillator_veolocity : float = 0.0
+
 @onready var dash_timer: Timer = $DashTimer
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var launch_point: Marker2D = $LaunchPoint
 @onready var laser: Area2D = $Laser
 @onready var thickness: float = $CollisionShape2D.shape.extents.y
+@onready var paddle: CharacterBody2D = $"."
 
 func _ready() -> void:
 	pass
@@ -30,7 +43,22 @@ func _process(delta: float) -> void:
 	if dashing or game_over or stage_clear: return
 	var dir: float = Input.get_action_strength("right") - Input.get_action_strength("left")
 	
-	velocity.x = dir * speed
+	if dir != 0:
+		velocity.x = lerp(velocity.x, dir * speed, accel * delta)
+	else:
+		velocity.x = lerp(velocity.x, 0.0, deccel * delta)
+	#velocity.x = dir * speed
+
+	# Oscillator
+	oscillator_veolocity += (velocity.x / speed) * velocity_multiplier
+	var force = -spring * displacement + damp * oscillator_veolocity
+	oscillator_veolocity -= force * delta
+	displacement -= oscillator_veolocity * delta
+	
+	paddle.rotation =  -displacement
+	
+	# basic rotation
+	#paddle.rotation = lerp_angle(paddle.rotation, deg_to_rad(max_lean_angle) * dir, lean_speed * delta)
 	
 	if Input.is_action_just_pressed("bump"):
 		frames_since_bump = 0

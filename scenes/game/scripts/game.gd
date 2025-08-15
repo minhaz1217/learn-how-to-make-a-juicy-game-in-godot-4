@@ -5,6 +5,7 @@ extends Node2D
 @export var brick_scene: PackedScene = preload("res://scenes/brick/brick.tscn")
 @export var block_energy: int = 10
 @export var energy_block_energy: int = 100
+@onready var camera: Camera2D = $Camera2D
 
 @onready var paddle: CharacterBody2D = $Paddle
 @onready var ball: CharacterBody2D = $Ball
@@ -31,7 +32,7 @@ func _ready() -> void:
 	randomize()
 	
 	hide_combo()
-	
+	Globals.camera = camera
 	ball.attached_to = paddle.launch_point
 	paddle.ball_attached = ball
 	paddle.ball = ball

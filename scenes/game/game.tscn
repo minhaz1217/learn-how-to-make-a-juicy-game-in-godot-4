@@ -222,6 +222,9 @@ size = 1
 
 [node name="Paddle" parent="." instance=ExtResource("1")]
 position = Vector2(960, 990)
+spring = 180.0
+damp = 7.0
+velocity_multiplier = 0.5
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(960, 540)
@@ -229,9 +232,10 @@ script = ExtResource("9_5jirj")
 dynamic_enabled = true
 dynamic_factor = 1.0
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="HUDCanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
 
-[node name="EnergyBar" parent="CanvasLayer" instance=ExtResource("5")]
+[node name="EnergyBar" parent="HUDCanvasLayer" instance=ExtResource("5")]
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
@@ -244,7 +248,7 @@ offset_bottom = 128.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="HealthBar" parent="CanvasLayer" instance=ExtResource("6")]
+[node name="HealthBar" parent="HUDCanvasLayer" instance=ExtResource("6")]
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
@@ -254,7 +258,7 @@ offset_right = 87.0
 offset_bottom = 128.0
 grow_vertical = 2
 
-[node name="Score" parent="CanvasLayer" instance=ExtResource("10_lkj00")]
+[node name="Score" parent="HUDCanvasLayer" instance=ExtResource("10_lkj00")]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -266,6 +270,8 @@ grow_horizontal = 2
 
 [node name="ComboTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="UICanvasLayer" type="CanvasLayer" parent="."]
 
 [connection signal="body_entered" from="DeathArea" to="." method="_on_DeathArea_body_entered"]
 [connection signal="hit_block" from="Ball" to="." method="_on_ball_hit_block"]

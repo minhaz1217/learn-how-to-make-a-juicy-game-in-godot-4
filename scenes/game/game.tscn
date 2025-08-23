@@ -58,10 +58,12 @@ material = SubResource("7")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -846.0
-offset_top = -1139.0
-offset_right = 2756.0
-offset_bottom = 2463.0
+offset_left = -4680.0
+offset_top = -1936.0
+offset_right = -1078.0
+offset_bottom = 1666.0
+grow_horizontal = 2
+grow_vertical = 2
 rotation = -0.785398
 pivot_offset = Vector2(1801, 1801)
 
@@ -94,6 +96,7 @@ polygon = PackedVector2Array(0, 1064, 0, 1132.27, 0, 1312, 1919, 1317, 1920, 106
 polygon = PackedVector2Array(106, 1189, -151, 1189, -153, -152, 2073, -150, 2070, 1189, 1814, 1189, 1814, 778, 1766, 705, 1766, 414, 1814, 342, 1814, 107, 106, 108, 106, 342, 154, 415, 154, 705, 106, 777)
 
 [node name="Walls" type="Sprite2D" parent="StaticBody2D"]
+visible = false
 position = Vector2(960, 498)
 texture = ExtResource("7")
 

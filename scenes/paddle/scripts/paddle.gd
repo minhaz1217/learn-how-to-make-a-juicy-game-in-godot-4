@@ -62,6 +62,7 @@ func _process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("bump"):
 		frames_since_bump = 0
+		anim.stop()
 		anim.play("bump")
 		if ball_attached:
 			launch_ball()
@@ -94,7 +95,10 @@ func _physics_process(delta: float) -> void:
 	if not collision: return
 	if collision.get_collider().is_in_group("Ball"):
 		pass
-		
+
+func ball_bounce() -> void:
+	anim.play("bounce")
+	
 func set_bumping(new_value: bool) -> void:
 	bumping = new_value
 	

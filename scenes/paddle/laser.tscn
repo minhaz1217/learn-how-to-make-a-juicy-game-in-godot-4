@@ -1,9 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://bf0hn220saeh8"]
+[gd_scene load_steps=4 format=3 uid="uid://bf0hn220saeh8"]
 
 [ext_resource type="Script" uid="uid://bf0avo8iq21nm" path="res://scenes/paddle/scripts/laser.gd" id="1"]
 
 [sub_resource type="RectangleShape2D" id="4"]
 size = Vector2(152.522, 1298)
+
+[sub_resource type="Environment" id="Environment_jwrhn"]
+background_mode = 3
+glow_enabled = true
+glow_bloom = 0.1
+glow_blend_mode = 0
 
 [node name="Laser" type="Area2D"]
 collision_layer = 4
@@ -23,6 +29,9 @@ default_color = Color(0.996078, 0.00784314, 0.309804, 1)
 
 [node name="AttackTime" type="Timer" parent="."]
 wait_time = 0.8
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_jwrhn")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="AttackTime" to="." method="_on_AttackTime_timeout"]

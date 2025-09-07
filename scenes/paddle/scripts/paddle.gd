@@ -35,6 +35,7 @@ var oscillator_veolocity : float = 0.0
 @onready var laser: Area2D = $Laser
 @onready var thickness: float = $CollisionShape2D.shape.extents.y
 @onready var paddle: CharacterBody2D = $"."
+@onready var ghost_spawner: Node2D = $GhostSpawner
 
 func _ready() -> void:
 	pass
@@ -72,6 +73,7 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("dash") and not dashing:
 		dashing = true
 		dash_timer.start(dash_duration)
+		ghost_spawner.start_spawn()
 		velocity.x = sign(velocity.x) * dash_speed
 		
 	if Input.is_action_just_pressed("special"):
@@ -112,3 +114,4 @@ func launch_ball() -> void:
 
 func _on_DashTimer_timeout() -> void:
 	dashing = false
+	ghost_spawner.stop_spawn()

@@ -28,6 +28,8 @@ var frames_since_bump: int = 0
 
 var displacement: float = 0.0
 var oscillator_veolocity : float = 0.0
+# HitStop
+var hitstop_frame = 0
 
 @onready var dash_timer: Timer = $DashTimer
 @onready var anim: AnimationPlayer = $AnimationPlayer
@@ -41,6 +43,15 @@ func _ready() -> void:
 	pass
 
 func _process(delta: float) -> void:
+	
+		# hitstop
+	if hitstop_frame > 0:
+		hitstop_frame -= 1
+		if hitstop_frame <= 0:
+			stop_hitstop()
+		return
+
+	
 	if dashing or game_over or stage_clear: return
 	var dir: float = Input.get_action_strength("right") - Input.get_action_strength("left")
 	
@@ -86,7 +97,14 @@ func _process(delta: float) -> void:
 		if get_parent().energy > delta*5:
 			get_parent().remove_energy(delta*5)
 			ball.attract(position)
-	
+func stop_hitstop() -> void:
+	anim.play()
+	hitstop_frame = 0
+
+func start_hitstop(hitstop_amount : int) -> void:
+	anim.pause()
+	hitstop_frame = hitstop_amount
+
 func _physics_process(delta: float) -> void:
 	if game_over or stage_clear: return
 	

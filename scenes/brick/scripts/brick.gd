@@ -14,6 +14,8 @@ signal destroyed(which)
 @export var bomb: CompressedTexture2D = preload("res://scenes/brick/visuals/Bomb.png")
 @export var energy: CompressedTexture2D = preload("res://scenes/brick/visuals/Energy.png")
 
+@export var brick_explosion : PackedScene = preload("res://scenes/brick/brick_explosion_particles.tscn")
+
 enum TYPE {
 	ONE,
 	TWO,
@@ -117,7 +119,11 @@ func bounce() -> void:
 	bounce_tween.tween_property(size_sprite, "scale", Vector2.ONE, 0.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CUBIC)
 	bounce_tween.parallel().tween_property(size_sprite, "rotation", 0.00, 0.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CUBIC)
 	
-
+func spawn_brick_explosion() -> void:
+	var instance = brick_explosion.instantiate()
+	get_tree().get_current_scene().add_child(instance)
+	instance.global_position = global_position
+	
 func damage(value: int) -> void:
 	health -= value
 	
@@ -155,5 +161,6 @@ func explode() -> void:
 		body.damage(10)
 
 func destroy() -> void:
+	spawn_brick_explosion()
 	emit_signal("destroyed", self)
 	queue_free()

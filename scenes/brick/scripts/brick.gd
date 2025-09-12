@@ -44,7 +44,7 @@ var health_dict = {
 @onready var type_sprite: Sprite2D = $Type
 
 var _destroyed: bool = false
-
+var bounce_tween :Tween
 func _ready() -> void:
 	choose_type_random()
 	choose_size_random()
@@ -107,6 +107,17 @@ func update_type_visuals() -> void:
 		TYPE.ENERGY:
 			type_sprite.texture = energy
 
+func bounce() -> void:
+	if bounce_tween and bounce_tween.is_running():
+		bounce_tween.kill()
+	
+	bounce_tween = create_tween()
+	bounce_tween.tween_property(size_sprite, "scale", Vector2(1.15, 1.15), 0.15).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
+	bounce_tween.parallel().tween_property(size_sprite, "rotation", randf_range(-5,5), 0.15).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
+	bounce_tween.tween_property(size_sprite, "scale", Vector2.ONE, 0.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CUBIC)
+	bounce_tween.parallel().tween_property(size_sprite, "rotation", 0.00, 0.2).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CUBIC)
+	
+
 func damage(value: int) -> void:
 	health -= value
 	
@@ -118,7 +129,7 @@ func damage(value: int) -> void:
 			TYPE.ENERGY:
 				give_energy()
 		destroy()
-	
+	bounce()
 	update_type_health()
 
 func update_type_health() -> void:

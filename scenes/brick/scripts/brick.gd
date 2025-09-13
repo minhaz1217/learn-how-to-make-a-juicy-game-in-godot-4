@@ -15,7 +15,7 @@ signal destroyed(which)
 @export var energy: CompressedTexture2D = preload("res://scenes/brick/visuals/Energy.png")
 
 @export var brick_explosion : PackedScene = preload("res://scenes/brick/brick_explosion_particles.tscn")
-
+@export var bomb_explosion : PackedScene = preload("res://scenes/brick/bomb_explosion_particles.tscn")
 enum TYPE {
 	ONE,
 	TWO,
@@ -123,6 +123,12 @@ func spawn_brick_explosion() -> void:
 	var instance = brick_explosion.instantiate()
 	get_tree().get_current_scene().add_child(instance)
 	instance.global_position = global_position
+
+
+func spawn_bomb_explosion() -> void:
+	var instance = brick_explosion.instantiate()
+	get_tree().get_current_scene().add_child(instance)
+	instance.global_position = global_position
 	
 func damage(value: int) -> void:
 	health -= value
@@ -152,6 +158,7 @@ func give_energy() -> void:
 	emit_signal("energy_brick_destroyed")
 
 func explode() -> void:
+	spawn_bomb_explosion()
 	var bodies = explosion_area.get_overlapping_bodies()
 	for body in bodies:
 		if body._destroyed: continue

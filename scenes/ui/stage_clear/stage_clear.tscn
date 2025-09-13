@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://b5uyful5m0wg5"]
+[gd_scene load_steps=8 format=3 uid="uid://b5uyful5m0wg5"]
 
 [ext_resource type="FontFile" uid="uid://br01odh1twpni" path="res://shared/fonts/aldo_the_apache/AldotheApache.ttf" id="1"]
 [ext_resource type="Script" uid="uid://cjnefqjqhnkso" path="res://scenes/ui/stage_clear/stage_clear.gd" id="2"]
 [ext_resource type="Shader" uid="uid://d0edhgcygel01" path="res://scenes/ui/stage_clear/effects/blur.gdshader" id="2_tpdoi"]
 [ext_resource type="Theme" uid="uid://8wej1kve5gix" path="res://scenes/ui/shared/theme.tres" id="3_ihxgv"]
+[ext_resource type="Script" uid="uid://by6br8g2e7gk0" path="res://addons/shaker/shaker.gd" id="5_ydxnq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ntget"]
 shader = ExtResource("2_tpdoi")
@@ -23,6 +24,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(960, 540)
 script = ExtResource("2")
 
 [node name="Blur" type="ColorRect" parent="."]
@@ -189,5 +191,14 @@ theme = ExtResource("3_ihxgv")
 theme_override_fonts/font = ExtResource("1")
 theme_override_font_sizes/font_size = 80
 text = "NEXT"
+
+[node name="Shaker" type="Node" parent="." node_paths=PackedStringArray("target_node")]
+script = ExtResource("5_ydxnq")
+target_node = NodePath("..")
+target_property = &"rotation_degrees"
+min_value = -2.0
+max_value = 2.0
+constant = true
+metadata/_custom_type_script = "uid://by6br8g2e7gk0"
 
 [connection signal="pressed" from="VBoxContainer/NextBtn" to="." method="_on_NextBtn_pressed"]

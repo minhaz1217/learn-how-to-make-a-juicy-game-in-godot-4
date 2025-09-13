@@ -44,6 +44,7 @@ var health_dict = {
 @onready var explosion_area: Area2D = $ExplosionArea
 @onready var size_sprite: Sprite2D = $Size
 @onready var type_sprite: Sprite2D = $Type
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 var _destroyed: bool = false
 var bounce_tween :Tween
@@ -171,3 +172,9 @@ func destroy() -> void:
 	spawn_brick_explosion()
 	emit_signal("destroyed", self)
 	queue_free()
+
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if anim_name == "appear":
+		if type == TYPE.ENERGY or type == TYPE.EXPLOSIVE:
+			animation_player.play("wiggle")

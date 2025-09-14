@@ -21,7 +21,7 @@ func _ready() -> void:
 	hide_stats()
 	#Globals.stats["time"] = 1000
 	#Globals.stats["bumps_early"] = 1000
-	animate_stats()
+	#animate_stats()
 
 func update_stats() -> void:
 	var ms = Globals.stats["time"] * 1000

@@ -1,8 +1,12 @@
-[gd_scene load_steps=22 format=3 uid="uid://cvg0cmgxvdkk0"]
+[gd_scene load_steps=26 format=3 uid="uid://cvg0cmgxvdkk0"]
 
 [ext_resource type="Texture2D" uid="uid://doqriorw2lonx" path="res://scenes/ball/visuals/ball.png" id="1"]
 [ext_resource type="Script" uid="uid://c0hvkrd7cdxua" path="res://scenes/ball/scripts/ball.gd" id="2"]
 [ext_resource type="Script" uid="uid://cfptl8cqj2tss" path="res://addons/trail_2d/trail_2d.gd" id="2_stoaj"]
+[ext_resource type="AudioStream" uid="uid://dh6e3w0r0mca1" path="res://scenes/ball/audio/ball_destroyed.sfxr" id="4_xotqv"]
+[ext_resource type="AudioStream" uid="uid://bdsauq21ucbl8" path="res://scenes/ball/audio/bump.sfxr" id="5_a81tc"]
+[ext_resource type="AudioStream" uid="uid://lwvnonf8iyo2" path="res://scenes/ball/audio/bump_others.sfxr" id="6_r8c1m"]
+[ext_resource type="AudioStream" uid="uid://bphlyt8go1ltk" path="res://scenes/ball/audio/bump_strong.sfxr" id="7_rp1mh"]
 
 [sub_resource type="Curve" id="Curve_xotqv"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -209,3 +213,15 @@ amount = 51
 texture = ExtResource("1")
 lifetime = 0.7
 process_material = SubResource("ParticleProcessMaterial_xotqv")
+
+[node name="Destroyed" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_xotqv")
+
+[node name="Bump" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_a81tc")
+
+[node name="BumpOthers" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_r8c1m")
+
+[node name="BumpStrong" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_rp1mh")

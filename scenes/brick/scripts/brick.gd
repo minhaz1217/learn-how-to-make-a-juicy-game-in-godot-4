@@ -159,6 +159,8 @@ func give_energy() -> void:
 	emit_signal("energy_brick_destroyed")
 
 func explode() -> void:
+	$Explode.play()
+	$Explode/Explode2.play()
 	spawn_bomb_explosion()
 	var bodies = explosion_area.get_overlapping_bodies()
 	for body in bodies:
@@ -169,12 +171,20 @@ func explode() -> void:
 		body.damage(10)
 
 func destroy() -> void:
+	if type != TYPE.EXPLOSIVE:
+		$Destroy.play()
 	spawn_brick_explosion()
+	visible = false
+	$CollisionShapeLong.set_deferred("disabled", true)
+	$CollisionShapeSmall.set_deferred("disabled", true)
 	emit_signal("destroyed", self)
-	queue_free()
 
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "appear":
 		if type == TYPE.ENERGY or type == TYPE.EXPLOSIVE:
 			animation_player.play("wiggle")
+
+
+func _on_destroy_finished() -> void:
+	queue_free()

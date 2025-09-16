@@ -15,8 +15,11 @@ var stats = {
 	"ball_bounces": 0,
 	"score": 0	
 }
+
 var camera: Camera2D
 var camera_object
+var pattern
+
 func _ready() -> void:
 	pass
 

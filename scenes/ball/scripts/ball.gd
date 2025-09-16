@@ -92,6 +92,7 @@ func _physics_process(delta: float) -> void:
 	# Update the normal with the paddle's velocity if we collide with
 	# the paddle
 	if collision.get_collider().is_in_group("Paddle"):
+		Globals.pattern.bounce(.3)
 		$BumpOthers.play()
 		Input.start_joy_vibration(0, .1, .1, .2)
 		collision.get_collider().ball_bounce()
@@ -143,6 +144,7 @@ func _physics_process(delta: float) -> void:
 		# Reset bump boost
 		boost_factor = 1.0
 	elif collision.get_collider().is_in_group("Bricks"):
+		Globals.pattern.bounce(.8)
 		$BumpStrong.play()
 		if collision.get_collider().type == collision.get_collider().TYPE.ENERGY or \
 			collision.get_collider().type == collision.get_collider().TYPE.EXPLOSIVE:
@@ -153,12 +155,14 @@ func _physics_process(delta: float) -> void:
 		else:
 			velocity = velocity.bounce(normal)
 			$Bump.play()
+			Globals.pattern.bounce(.25)
 			Globals.camera.shake(0.25, 20, 15)
 			Input.start_joy_vibration(0, .2, .1, .15)
 			start_hitstop(hitstop_block)
 	else:
 #		print("HIT OTHER: ", Globals.stats["ball_bounces"])
 		Globals.camera.shake(0.15, 20, 5)
+		Globals.pattern.bounce(.1)
 		spawn_bounce_particles(collision.get_position(), normal)
 		velocity = velocity.bounce(normal)
 		$BumpOthers.play()

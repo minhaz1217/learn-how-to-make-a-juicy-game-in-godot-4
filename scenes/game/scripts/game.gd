@@ -40,7 +40,7 @@ func _ready() -> void:
 	ball.attached_to = paddle.launch_point
 	paddle.ball_attached = ball
 	paddle.ball = ball
-	
+	Globals.pattern = $Pattern
 	for brick in get_tree().get_nodes_in_group("Bricks"):
 		brick.energy_brick_destroyed.connect(on_energy_brick_destroyed)
 		

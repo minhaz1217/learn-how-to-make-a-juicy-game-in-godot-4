@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://c1cvnrsabg3s1"]
+[gd_scene load_steps=29 format=3 uid="uid://c1cvnrsabg3s1"]
 
 [ext_resource type="PackedScene" uid="uid://dyy7lp07carkr" path="res://scenes/paddle/paddle.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://cvg0cmgxvdkk0" path="res://scenes/ball/ball.tscn" id="2"]
@@ -10,7 +10,9 @@
 [ext_resource type="Shader" uid="uid://uoh4vls7yp7v" path="res://scenes/game/effects/combo.gdshader" id="5_ftsea"]
 [ext_resource type="PackedScene" uid="uid://lc5lho6dqctj" path="res://scenes/ui/health/health.tscn" id="6"]
 [ext_resource type="Texture2D" uid="uid://cca2cimj26xys" path="res://scenes/game/visuals/walls.png" id="7"]
+[ext_resource type="Shader" uid="uid://djf4hrrlgq83c" path="res://scenes/game/effects/wave.gdshader" id="7_otnwt"]
 [ext_resource type="Texture2D" uid="uid://dds87jvstluyg" path="res://scenes/game/visuals/background.png" id="8"]
+[ext_resource type="Texture2D" uid="uid://doqriorw2lonx" path="res://scenes/ball/visuals/ball.png" id="8_3xj4h"]
 [ext_resource type="Texture2D" uid="uid://sh7g4gfmqe73" path="res://scenes/game/visuals/pattern.png" id="9"]
 [ext_resource type="Script" uid="uid://b4wblsdijyyyf" path="res://scenes/game/scripts/camera_final.gd" id="9_5jirj"]
 [ext_resource type="PackedScene" uid="uid://cn3a4bs7x53tq" path="res://scenes/ui/score/score.tscn" id="10_lkj00"]
@@ -47,11 +49,45 @@ shader_parameter/color = Color(0, 0, 0, 0.0745098)
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(1920, 80)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3xj4h"]
+shader = ExtResource("7_otnwt")
+shader_parameter/speed = 0.5
+shader_parameter/frequency_y = 10.0
+shader_parameter/frequency_x = 0.0
+shader_parameter/amplitude_y = 0.4
+shader_parameter/amplitude_x = 0.0
+shader_parameter/inclination = 0.0
+
 [sub_resource type="Gradient" id="4"]
 colors = PackedColorArray(1, 0.752941, 0.0117647, 1, 1, 0.517647, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="5"]
 gradient = SubResource("4")
+
+[sub_resource type="Gradient" id="Gradient_3xj4h"]
+offsets = PackedFloat32Array(0, 0.626959, 1)
+colors = PackedColorArray(1, 0.752941, 0.0117647, 1, 1, 0.517647, 0, 1, 1, 0.517647, 0, 0.0313726)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5v6r0"]
+gradient = SubResource("Gradient_3xj4h")
+
+[sub_resource type="Curve" id="Curve_5v6r0"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.324638, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_uyinl"]
+curve = SubResource("Curve_5v6r0")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_uyinl"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(1000, 1, 1)
+gravity = Vector3(0, -90, 0)
+scale_min = 0.05
+scale_max = 0.25
+scale_curve = SubResource("CurveTexture_uyinl")
+color_ramp = SubResource("GradientTexture1D_5v6r0")
 
 [node name="Game" type="Node2D"]
 script = ExtResource("3")
@@ -94,11 +130,22 @@ position = Vector2(960, 1101)
 shape = SubResource("1")
 
 [node name="Polygon2D" type="Polygon2D" parent="DeathArea"]
+material = SubResource("ShaderMaterial_3xj4h")
 position = Vector2(-960, -1104)
 color = Color(1, 0.752941, 0.0117647, 1)
 antialiased = true
 texture = SubResource("5")
 polygon = PackedVector2Array(0, 1064, 0, 1132.27, 0, 1312, 1919, 1317, 1920, 1064, 1854.6, 1064, 1791.82, 1064, 1729.03, 1064, 1663.39, 1064, 1599.89, 1064, 1537.1, 1064, 1471.46, 1064, 1407.25, 1064, 1345.89, 1064, 1280.25, 1064, 1214.61, 1064, 1151.11, 1064, 1086.9, 1064, 1023.4, 1064, 959.898, 1064, 894.971, 1064, 831.472, 1064, 767.259, 1064, 705.186, 1064, 640.259, 1064, 575.333, 1064, 511.833, 1064, 448.333, 1064, 385.547, 1064, 321.334, 1064, 257.834, 1064, 192.194, 1064, 128.694, 1064, 63.0542, 1064)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="DeathArea"]
+show_behind_parent = true
+position = Vector2(0, -28)
+amount = 150
+texture = ExtResource("8_3xj4h")
+lifetime = 1.5
+explosiveness = 0.07
+randomness = 0.38
+process_material = SubResource("ParticleProcessMaterial_uyinl")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 

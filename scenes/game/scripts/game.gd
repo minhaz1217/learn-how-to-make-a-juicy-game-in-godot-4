@@ -31,7 +31,7 @@ var bricks: Array
 var bricks_to_destroy: Array
 var time: float = 0
 var started: bool = false
-
+var camera_tween: Tween
 
 func _ready() -> void:
 	randomize()
@@ -154,7 +154,7 @@ func on_brick_destroyed(which) -> void:
 		paddle.stage_clear = true
 		Globals.stats["time"] = time
 		reset_and_attach_ball()
-		show_stage_clear()
+		level_clear_camera_sequence_done()
 
 func _on_DeathArea_body_entered(body: Node) -> void:
 	if not body.is_in_group("Ball"): return
@@ -179,6 +179,32 @@ func show_stage_clear() -> void:
 	var instance = stage_clear_scene.instantiate()
 	ui_canvas_layer.add_child(instance)
 	instance.next.connect(on_stage_clear_next)
+
+func clear_level_camera_sequence() -> void:
+	if camera_tween and camera_tween.is_running():
+		camera_tween.kill()
+	camera.dynamic_enabled = false
+	camera.target = ball
+	
+	Globals.camera.shake(.5,25,25)
+	Input.start_joy_vibration(0,.5,.25, .5)
+	
+	camera_tween = get_tree().create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	camera_tween.tween_property(Engine, "time_scale", .1, .25)
+	camera_tween.parallel().tween_property(camera, "global_position", ball.global_position, .3)
+	camera_tween.parallel().tween_property(camera, "zoom", Vector2(1.5,1.5), .3)
+	camera_tween.tween_interval(.25)
+	camera_tween.tween_property(Engine, "time_scale", 1, .25)
+	camera_tween.parallel().tween_property(camera, "global_position", get_viewport_rect().size/2, .25)
+	camera_tween.parallel().tween_property(camera, "zoom", Vector2(1,1), .35)
+	camera_tween.tween_callback(Callable(self, "level_clear_camera_sequence_done"))
+
+func level_clear_camera_sequence_done() -> void:
+	camera.target = null
+	camera.dynamic_enabled = true
+	ball.can_move = false
+	show_stage_clear()
+	
 
 func _on_ball_hit_block(block) -> void:
 	add_energy(block_energy)
